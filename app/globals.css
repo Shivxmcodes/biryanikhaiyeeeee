@@ -207,12 +207,103 @@
   animation: rms-zoom 8s ease-out forwards;
 }
 
+@keyframes rms-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes rms-aurora {
+  0%,
+  100% {
+    transform: translate3d(-8%, -6%, 0) scale(1.1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(8%, 6%, 0) scale(1.25);
+    opacity: 0.85;
+  }
+}
+
+@keyframes rms-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    opacity: 0.9;
+  }
+  50% {
+    box-shadow: 0 0 18px 2px var(--rms-glow, rgba(255, 140, 60, 0.55));
+    opacity: 1;
+  }
+}
+
+@keyframes rms-badge-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  75%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes rms-spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@utility animate-aurora {
+  animation: rms-aurora 12s ease-in-out infinite;
+}
+
+@utility animate-glow-pulse {
+  animation: rms-glow-pulse 2.4s ease-in-out infinite;
+}
+
+@utility animate-badge-ping {
+  animation: rms-badge-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@utility animate-spin-slow {
+  animation: rms-spin-slow 9s linear infinite;
+}
+
+@utility text-shimmer {
+  background: linear-gradient(
+    100deg,
+    #fff 0%,
+    #fff 35%,
+    var(--rms-shimmer-accent, #ffb877) 50%,
+    #fff 65%,
+    #fff 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: rms-shimmer 4.5s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-rise,
   .animate-fade,
-  .animate-kenburns {
+  .animate-kenburns,
+  .animate-aurora,
+  .animate-glow-pulse,
+  .animate-badge-ping,
+  .animate-spin-slow,
+  .text-shimmer {
     animation: none;
     opacity: 1;
     transform: none;
+  }
+  .text-shimmer {
+    color: #fff;
   }
 }
