@@ -34,7 +34,7 @@ export function Sidebar() {
           <UtensilsCrossed className="size-5" />
         </div>
         <div className="leading-tight">
-          <p className="text-lg font-semibold tracking-tight text-white">GourmetOS</p>
+          <p className="font-display text-lg font-semibold tracking-tight text-white">Biryani Ki Bahaar</p>
           <p className="text-xs text-sidebar-foreground/60">Restaurant OS</p>
         </div>
       </div>

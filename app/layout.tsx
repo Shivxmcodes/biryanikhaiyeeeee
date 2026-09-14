@@ -1,11 +1,24 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Playfair_Display, Inter } from 'next/font/google'
 import './globals.css'
 
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
-  title: 'GourmetOS — Restaurant Management System',
+  title: 'Biryani Ki Bahaar — Restaurant Management System',
   description:
-    'A premium restaurant management dashboard for orders, tables, kitchen, inventory, and staff.',
+    'A premium restaurant management dashboard for Biryani Ki Bahaar — orders, tables, kitchen, inventory, and staff.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -40,8 +53,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
+      <body className="font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
