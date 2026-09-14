@@ -26,12 +26,12 @@ export function OverviewFeature() {
 
           <h2
             id="overview-heading"
-            className="font-display text-3xl uppercase leading-[1.05] tracking-tight text-foreground sm:text-4xl lg:text-5xl"
+            className="font-display text-3xl uppercase leading-[1.05] tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl"
           >
             Designing a refined digital experience for a premium biryani house
           </h2>
 
-          <p className="max-w-prose text-sm leading-relaxed text-muted-foreground sm:text-base">
+          <p className="max-w-prose text-sm leading-relaxed text-neutral-700 sm:text-base">
             A dedicated management hub for Biryani Ki Bahaar in Hyderabad, designed to convey the warmth
             of authentic dum-cooked flavors while guiding staff through key services — from menu and
             table reservations to room service, delivery, and private events.

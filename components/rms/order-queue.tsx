@@ -11,11 +11,11 @@ type Order = {
 }
 
 const orders: Order[] = [
-  { id: "#1042", table: "T-08", waiter: "Marco R.", status: "Cooking", elapsed: "12 min" },
-  { id: "#1041", table: "T-03", waiter: "Elena V.", status: "Ready", elapsed: "18 min" },
-  { id: "#1040", table: "T-15", waiter: "Sofia L.", status: "Pending", elapsed: "3 min" },
-  { id: "#1039", table: "T-21", waiter: "James K.", status: "Cooking", elapsed: "9 min" },
-  { id: "#1038", table: "T-06", waiter: "Marco R.", status: "Ready", elapsed: "22 min" },
+  { id: "#1042", table: "T-08", waiter: "Rahul S.", status: "Cooking", elapsed: "12 min" },
+  { id: "#1041", table: "T-03", waiter: "Priya M.", status: "Ready", elapsed: "18 min" },
+  { id: "#1040", table: "T-15", waiter: "Arjun K.", status: "Pending", elapsed: "3 min" },
+  { id: "#1039", table: "T-21", waiter: "Sneha R.", status: "Cooking", elapsed: "9 min" },
+  { id: "#1038", table: "T-06", waiter: "Vikram P.", status: "Ready", elapsed: "22 min" },
 ]
 
 const statusStyles: Record<Status, string> = {
