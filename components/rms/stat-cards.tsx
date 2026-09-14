@@ -1,10 +1,11 @@
-import { DollarSign, ClipboardList, Users, Armchair, TrendingUp, TrendingDown } from "lucide-react"
+import { IndianRupee, ClipboardList, Users, Armchair, TrendingUp, TrendingDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 type Stat = {
   label: string
   value: string
-  icon: typeof DollarSign
+  icon: typeof IndianRupee
+  iconColor: string
   trend?: { value: string; up: boolean }
   hint?: string
 }
@@ -12,26 +13,30 @@ type Stat = {
 const stats: Stat[] = [
   {
     label: "Today's Revenue",
-    value: "$8,420",
-    icon: DollarSign,
+    value: "₹1,84,200",
+    icon: IndianRupee,
+    iconColor: "bg-amber-100 text-amber-700",
     trend: { value: "12.5%", up: true },
   },
   {
     label: "Active Orders",
     value: "24",
     icon: ClipboardList,
+    iconColor: "bg-sky-100 text-sky-700",
     hint: "6 awaiting kitchen",
   },
   {
     label: "Total Guests",
     value: "142",
     icon: Users,
+    iconColor: "bg-emerald-100 text-emerald-700",
     trend: { value: "8.2%", up: true },
   },
   {
     label: "Available Tables",
     value: "9 / 32",
     icon: Armchair,
+    iconColor: "bg-violet-100 text-violet-700",
     trend: { value: "3 fewer", up: false },
   },
 ]
@@ -45,7 +50,7 @@ export function StatCards() {
           className="rounded-2xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
         >
           <div className="flex items-start justify-between">
-            <span className="flex size-11 items-center justify-center rounded-xl bg-accent text-accent-foreground">
+            <span className={cn("flex size-11 items-center justify-center rounded-xl", stat.iconColor)}>
               <stat.icon className="size-5" />
             </span>
             {stat.trend ? (

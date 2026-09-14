@@ -1,6 +1,8 @@
 import { Sidebar } from "@/components/rms/sidebar"
 import { Header } from "@/components/rms/header"
 import { Hero } from "@/components/rms/hero"
+import { OverviewFeature } from "@/components/rms/overview-feature"
+import { MenuGallery } from "@/components/rms/menu-gallery"
 import { StatCards } from "@/components/rms/stat-cards"
 import { OrderQueue } from "@/components/rms/order-queue"
 import { QuickActions } from "@/components/rms/quick-actions"
@@ -17,6 +19,10 @@ export default function Page() {
 
         <main className="flex-1 space-y-6 px-4 py-6 sm:px-6 lg:px-8">
           <Hero />
+
+          <OverviewFeature />
+
+          <MenuGallery />
 
           <div className="animate-rise [animation-delay:250ms]">
             <h2 className="text-2xl font-semibold tracking-tight text-foreground">Dashboard Overview</h2>

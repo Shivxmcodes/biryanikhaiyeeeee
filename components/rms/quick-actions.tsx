@@ -8,9 +8,9 @@ const actions = [
 ]
 
 const trending = [
-  { name: "Truffle Beef Burger", orders: 48, image: "/food/truffle-burger.png" },
-  { name: "Creamy Truffle Pasta", orders: 41, image: "/food/truffle-pasta.png" },
-  { name: "Grilled Atlantic Salmon", orders: 33, image: "/food/grilled-salmon.png" },
+  { name: "Hyderabadi Dum Biryani", orders: 128, image: "/food/dum-biryani.png", rank: "bg-amber-500" },
+  { name: "Butter Chicken", orders: 96, image: "/food/butter-chicken.png", rank: "bg-rose-500" },
+  { name: "Gulab Jamun & Kulfi", orders: 74, image: "/food/gulab-jamun.png", rank: "bg-violet-500" },
 ]
 
 export function QuickActions() {
@@ -53,7 +53,9 @@ export function QuickActions() {
         <ul className="mt-4 space-y-3">
           {trending.map((item, index) => (
             <li key={item.name} className="flex items-center gap-3">
-              <span className="text-sm font-semibold text-muted-foreground/60 tabular-nums">
+              <span
+                className={`flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white tabular-nums ${item.rank}`}
+              >
                 {index + 1}
               </span>
               <Image
