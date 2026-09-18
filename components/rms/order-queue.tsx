@@ -1,27 +1,25 @@
-import { cn } from "@/lib/utils"
+"use client"
 
-type Status = "Cooking" | "Ready" | "Pending"
+import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react"
+import { Trash2 } from "lucide-react"
+
+type Status = "Cooking" | "Ready" | "Pending" | "COMPLETED"
 
 type Order = {
   id: string
-  table: string
-  waiter: string
+  orderId: string
+  table: { number: string }
+  waiter: { name: string }
   status: Status
   elapsed: string
 }
 
-const orders: Order[] = [
-  { id: "#1042", table: "T-08", waiter: "Rahul S.", status: "Cooking", elapsed: "12 min" },
-  { id: "#1041", table: "T-03", waiter: "Priya M.", status: "Ready", elapsed: "18 min" },
-  { id: "#1040", table: "T-15", waiter: "Arjun K.", status: "Pending", elapsed: "3 min" },
-  { id: "#1039", table: "T-21", waiter: "Sneha R.", status: "Cooking", elapsed: "9 min" },
-  { id: "#1038", table: "T-06", waiter: "Vikram P.", status: "Ready", elapsed: "22 min" },
-]
-
-const statusStyles: Record<Status, string> = {
+const statusStyles: Record<string, string> = {
   Cooking: "bg-amber-100 text-amber-700 ring-amber-600/20",
   Ready: "bg-emerald-100 text-emerald-700 ring-emerald-600/20",
   Pending: "bg-rose-100 text-rose-700 ring-rose-600/20",
+  COMPLETED: "bg-blue-100 text-blue-700 ring-blue-600/20",
 }
 
 function StatusBadge({ status }: { status: Status }) {
@@ -29,7 +27,7 @@ function StatusBadge({ status }: { status: Status }) {
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset",
-        statusStyles[status],
+        statusStyles[status] || statusStyles.Pending,
       )}
     >
       <span className="size-1.5 rounded-full bg-current" />
@@ -39,6 +37,36 @@ function StatusBadge({ status }: { status: Status }) {
 }
 
 export function OrderQueue() {
+  const [orders, setOrders] = useState<Order[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  const fetchOrders = () => {
+    fetch('/api/orders')
+      .then(res => res.json())
+      .then(data => {
+        setOrders(data)
+        setIsLoading(false)
+      })
+      .catch(err => {
+        console.error(err)
+        setIsLoading(false)
+      })
+  }
+
+  useEffect(() => {
+    fetchOrders()
+  }, [])
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this pending order?")) return;
+    try {
+      await fetch(`/api/orders/${id}`, { method: 'DELETE' })
+      setOrders(orders.filter(o => o.id !== id))
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
     <section className="rounded-2xl border border-border bg-card shadow-sm">
       <div className="flex items-center justify-between border-b border-border px-5 py-4">
@@ -64,19 +92,36 @@ export function OrderQueue() {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {isLoading ? (
+              <tr><td colSpan={5} className="px-5 py-4 text-center text-muted-foreground">Loading orders...</td></tr>
+            ) : orders.length === 0 ? (
+              <tr><td colSpan={5} className="px-5 py-4 text-center text-muted-foreground">No active orders</td></tr>
+            ) : orders.map((order) => (
               <tr
                 key={order.id}
                 className="border-b border-border/60 transition-colors last:border-0 hover:bg-muted/50"
               >
-                <td className="px-5 py-4 font-semibold text-foreground">{order.id}</td>
-                <td className="px-5 py-4 text-muted-foreground">{order.table}</td>
-                <td className="px-5 py-4 text-foreground">{order.waiter}</td>
+                <td className="px-5 py-4 font-semibold text-foreground">{order.orderId}</td>
+                <td className="px-5 py-4 text-muted-foreground">{order.table?.number || 'N/A'}</td>
+                <td className="px-5 py-4 text-foreground">{order.waiter?.name || 'Unassigned'}</td>
                 <td className="px-5 py-4">
                   <StatusBadge status={order.status} />
                 </td>
                 <td className="px-5 py-4 text-right font-mono tabular-nums text-muted-foreground">
-                  {order.elapsed}
+                  <div className="flex items-center justify-end gap-3">
+                    {order.elapsed}
+                    {order.status === "Pending" ? (
+                      <button 
+                        onClick={() => handleDelete(order.id)}
+                        className="text-rose-400 hover:text-rose-600 transition-colors"
+                        title="Delete pending order"
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    ) : (
+                      <div className="w-4" /> // placeholder for alignment
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

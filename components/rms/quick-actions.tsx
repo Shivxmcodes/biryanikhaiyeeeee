@@ -1,10 +1,13 @@
+"use client"
+
+import Link from "next/link"
 import Image from "next/image"
 import { Plus, CalendarPlus, BookOpenText } from "lucide-react"
 
 const actions = [
-  { label: "New Order", icon: Plus, primary: true },
-  { label: "Reserve Table", icon: CalendarPlus, primary: false },
-  { label: "Update Menu", icon: BookOpenText, primary: false },
+  { label: "New Order", href: "/pos", icon: Plus, primary: true },
+  { label: "Reserve Table", href: "/reservations", icon: CalendarPlus, primary: false },
+  { label: "Update Menu", href: "/update-menu", icon: BookOpenText, primary: false },
 ]
 
 const trending = [
@@ -21,9 +24,9 @@ export function QuickActions() {
         <p className="text-sm text-muted-foreground">Jump into common tasks</p>
         <div className="mt-4 flex flex-col gap-2.5">
           {actions.map((action) => (
-            <button
+            <Link
               key={action.label}
-              type="button"
+              href={action.href}
               className={
                 action.primary
                   ? "flex items-center gap-3 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:brightness-110 active:scale-[0.98]"
@@ -40,7 +43,7 @@ export function QuickActions() {
                 <action.icon className="size-4" />
               </span>
               {action.label}
-            </button>
+            </Link>
           ))}
         </div>
       </section>

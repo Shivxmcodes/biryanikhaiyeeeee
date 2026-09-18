@@ -1,0 +1,14 @@
+import { NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client'
+
+const globalForPrisma = global as unknown as { prisma: PrismaClient }
+const prisma = globalForPrisma.prisma || new PrismaClient()
+
+export async function GET() {
+  try {
+    const inventory = await prisma.inventory.findMany()
+    return NextResponse.json(inventory)
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to fetch inventory" }, { status: 500 })
+  }
+}

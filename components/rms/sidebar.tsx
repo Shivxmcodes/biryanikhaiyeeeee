@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import {
   Home,
   Monitor,
@@ -13,6 +14,7 @@ import {
   LogOut,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { usePathname } from "next/navigation"
 
 type NavItem = {
   label: string
@@ -21,20 +23,21 @@ type NavItem = {
   from: string
   to: string
   glow: string
+  href: string
 }
 
 const navItems: NavItem[] = [
-  { label: "Dashboard", icon: Home, from: "from-amber-400", to: "to-orange-600", glow: "rgba(251,146,60,0.6)" },
-  { label: "POS", icon: Monitor, from: "from-sky-400", to: "to-blue-600", glow: "rgba(56,189,248,0.6)" },
-  { label: "Live Orders", icon: Bell, badge: 3, from: "from-rose-400", to: "to-red-600", glow: "rgba(244,63,94,0.6)" },
-  { label: "Table Map", icon: Grid3x3, from: "from-violet-400", to: "to-purple-600", glow: "rgba(167,139,250,0.6)" },
-  { label: "Kitchen Display", icon: ChefHat, from: "from-emerald-400", to: "to-green-600", glow: "rgba(52,211,153,0.6)" },
-  { label: "Inventory", icon: Package, from: "from-teal-400", to: "to-cyan-600", glow: "rgba(45,212,191,0.6)" },
-  { label: "Staff", icon: Users, from: "from-fuchsia-400", to: "to-pink-600", glow: "rgba(232,121,249,0.6)" },
+  { label: "Dashboard", href: "/", icon: Home, from: "from-amber-400", to: "to-orange-600", glow: "rgba(251,146,60,0.6)" },
+  { label: "POS", href: "/pos", icon: Monitor, from: "from-sky-400", to: "to-blue-600", glow: "rgba(56,189,248,0.6)" },
+  { label: "Live Orders", href: "/live-orders", icon: Bell, badge: 3, from: "from-rose-400", to: "to-red-600", glow: "rgba(244,63,94,0.6)" },
+  { label: "Table Map", href: "/table-map", icon: Grid3x3, from: "from-violet-400", to: "to-purple-600", glow: "rgba(167,139,250,0.6)" },
+  { label: "Kitchen Display", href: "/kitchen", icon: ChefHat, from: "from-emerald-400", to: "to-green-600", glow: "rgba(52,211,153,0.6)" },
+  { label: "Inventory", href: "/inventory", icon: Package, from: "from-teal-400", to: "to-cyan-600", glow: "rgba(45,212,191,0.6)" },
+  { label: "Staff", href: "/staff", icon: Users, from: "from-fuchsia-400", to: "to-pink-600", glow: "rgba(232,121,249,0.6)" },
 ]
 
 export function Sidebar() {
-  const [active, setActive] = useState("Dashboard")
+  const pathname = usePathname()
 
   return (
     <aside className="relative flex h-full w-64 shrink-0 flex-col overflow-hidden bg-neutral-950 text-sidebar-foreground">
@@ -77,12 +80,11 @@ export function Sidebar() {
 
       <nav className="relative flex-1 space-y-1.5 px-3 py-2" aria-label="Primary">
         {navItems.map((item) => {
-          const isActive = active === item.label
+          const isActive = pathname === item.href || (pathname === "/" && item.href === "/")
           return (
-            <button
+            <Link
               key={item.label}
-              type="button"
-              onClick={() => setActive(item.label)}
+              href={item.href}
               aria-current={isActive ? "page" : undefined}
               style={{ ["--rms-glow" as string]: item.glow }}
               className={cn(
@@ -144,7 +146,7 @@ export function Sidebar() {
                   </span>
                 </span>
               ) : null}
-            </button>
+            </Link>
           )
         })}
       </nav>

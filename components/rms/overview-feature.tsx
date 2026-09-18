@@ -1,11 +1,12 @@
 import Image from "next/image"
+import Link from "next/link"
 import { Truck, UtensilsCrossed, CalendarHeart, ConciergeBell } from "lucide-react"
 
 const highlights = [
-  { icon: UtensilsCrossed, label: "Dine-In Menu", color: "text-amber-600", bg: "bg-amber-100" },
-  { icon: ConciergeBell, label: "Room Service", color: "text-rose-600", bg: "bg-rose-100" },
-  { icon: Truck, label: "Delivery", color: "text-emerald-600", bg: "bg-emerald-100" },
-  { icon: CalendarHeart, label: "Reservations", color: "text-violet-600", bg: "bg-violet-100" },
+  { icon: UtensilsCrossed, label: "Dine-In Menu", href: "/menu", color: "text-amber-600", bg: "bg-amber-100" },
+  { icon: ConciergeBell, label: "Room Service", href: "/room-service", color: "text-rose-600", bg: "bg-rose-100" },
+  { icon: Truck, label: "Delivery", href: "/delivery", color: "text-emerald-600", bg: "bg-emerald-100" },
+  { icon: CalendarHeart, label: "Reservations", href: "/reservations", color: "text-violet-600", bg: "bg-violet-100" },
 ]
 
 export function OverviewFeature() {
@@ -39,15 +40,16 @@ export function OverviewFeature() {
 
           <div className="grid grid-cols-2 gap-3 sm:max-w-md">
             {highlights.map((h) => (
-              <div
+              <Link
                 key={h.label}
-                className="flex items-center gap-3 rounded-xl border border-border/60 bg-card/70 px-3 py-2.5 backdrop-blur-sm transition-transform hover:-translate-y-0.5"
+                href={h.href}
+                className="flex items-center gap-3 rounded-xl border border-border/60 bg-card/70 px-3 py-2.5 backdrop-blur-sm transition-transform hover:-translate-y-0.5 hover:bg-white/80"
               >
                 <span className={`flex size-9 items-center justify-center rounded-lg ${h.bg}`}>
                   <h.icon className={`size-5 ${h.color}`} />
                 </span>
                 <span className="text-sm font-medium text-foreground">{h.label}</span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
