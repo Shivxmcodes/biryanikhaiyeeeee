@@ -15,6 +15,7 @@ function useClock() {
 
 export function Header() {
   const [isProfileOpen, setIsProfileOpen] = useState(false)
+  const [isNotifOpen, setIsNotifOpen] = useState(false)
   const now = useClock()
   const time = now
     ? now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
@@ -41,16 +42,45 @@ export function Header() {
           <span className="hidden text-xs text-muted-foreground sm:inline">{date}</span>
         </div>
 
-        <button
-          type="button"
-          className="relative flex size-10 items-center justify-center rounded-lg border border-border bg-card text-foreground transition-colors hover:bg-accent"
-          aria-label="Notifications, 3 unread"
-        >
-          <Bell className="size-[18px]" />
-          <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
-            3
-          </span>
-        </button>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setIsNotifOpen(!isNotifOpen)}
+            className={`relative flex size-10 items-center justify-center rounded-lg border border-border bg-card text-foreground transition-colors hover:bg-accent ${isNotifOpen ? "bg-accent" : ""}`}
+            aria-label="Notifications, 3 unread"
+          >
+            <Bell className="size-[18px]" />
+            <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
+              3
+            </span>
+          </button>
+
+          {isNotifOpen && (
+            <div className="absolute right-0 mt-2 w-72 overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-md animate-in fade-in slide-in-from-top-2">
+              <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-muted/50">
+                <span className="text-sm font-semibold">Notifications</span>
+                <span className="text-xs text-primary cursor-pointer hover:underline">Mark all read</span>
+              </div>
+              <div className="flex flex-col max-h-64 overflow-y-auto">
+                <div className="flex flex-col gap-1 px-3 py-2 border-b border-border/50 hover:bg-accent/50 cursor-pointer">
+                  <span className="text-sm font-medium">New Table Reservation</span>
+                  <span className="text-xs text-muted-foreground">Table T-12 booked for 8:00 PM</span>
+                  <span className="text-[10px] text-muted-foreground mt-1">2 mins ago</span>
+                </div>
+                <div className="flex flex-col gap-1 px-3 py-2 border-b border-border/50 hover:bg-accent/50 cursor-pointer">
+                  <span className="text-sm font-medium text-amber-500">Low Stock Alert</span>
+                  <span className="text-xs text-muted-foreground">Saffron is below minimum level (5g left)</span>
+                  <span className="text-[10px] text-muted-foreground mt-1">15 mins ago</span>
+                </div>
+                <div className="flex flex-col gap-1 px-3 py-2 hover:bg-accent/50 cursor-pointer">
+                  <span className="text-sm font-medium">Order Completed</span>
+                  <span className="text-xs text-muted-foreground">Order #1041 served successfully</span>
+                  <span className="text-[10px] text-muted-foreground mt-1">1 hour ago</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
     <div className="relative">
         <button
