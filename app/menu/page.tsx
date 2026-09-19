@@ -53,19 +53,33 @@ export default function MenuPage() {
               </div>
               
               <div className="grid gap-6 sm:grid-cols-2">
-                {items.map(item => (
-                  <div key={item.id} className="group relative flex items-center justify-between rounded-3xl border border-amber-900/5 bg-white p-6 shadow-xl shadow-amber-900/5 transition-transform hover:-translate-y-1">
-                    <div className="pr-4">
-                      <h3 className="text-xl font-bold text-neutral-800">{item.name}</h3>
-                      <div className="mt-2 flex items-center gap-1 text-xs font-bold text-amber-500">
-                        <Star className="size-3.5 fill-amber-500" /> Chef's Special
+                {items.map(item => {
+                  const imageSrc = cat === "Starters" ? "/food/starters.jpg" 
+                                 : cat === "Main Course" ? "/food/main_course.jpg"
+                                 : cat === "Drinks" ? "/food/drinks.jpg"
+                                 : "/food/dessert.jpg"
+                  return (
+                    <div key={item.id} className="group relative overflow-hidden flex items-stretch justify-between rounded-3xl border border-amber-900/5 bg-white shadow-xl shadow-amber-900/5 transition-transform hover:-translate-y-1">
+                      {/* Mouth watering photo */}
+                      <div className="w-32 shrink-0">
+                        <img 
+                          src={imageSrc} 
+                          alt={item.name} 
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                      </div>
+                      <div className="flex flex-1 flex-col justify-center p-6 pl-5">
+                        <h3 className="text-xl font-bold text-neutral-800">{item.name}</h3>
+                        <div className="mt-2 flex items-center gap-1 text-xs font-bold text-amber-500">
+                          <Star className="size-3.5 fill-amber-500" /> Chef's Special
+                        </div>
+                      </div>
+                      <div className="shrink-0 p-6 flex items-center">
+                        <span className="text-2xl font-black text-amber-600">₹{item.price}</span>
                       </div>
                     </div>
-                    <div className="shrink-0 text-right">
-                      <span className="text-2xl font-black text-amber-600">₹{item.price}</span>
-                    </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </section>
           )

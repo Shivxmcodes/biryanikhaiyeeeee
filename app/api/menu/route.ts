@@ -34,12 +34,21 @@ async function seedMenuItemsIfNeeded() {
 async function seedMissingItems() {
   const itemsToEnsure = [
     { name: 'Chilli Chicken', category: 'Starters', price: 250 },
+    { name: 'Tandoori Chicken', category: 'Starters', price: 320 },
+    { name: 'Paneer Tikka', category: 'Starters', price: 220 },
+    { name: 'Crispy Corn', category: 'Starters', price: 180 },
     { name: 'Diet Coke', category: 'Drinks', price: 60 },
     { name: 'Sprite', category: 'Drinks', price: 50 },
     { name: 'Vanilla Ice Cream', category: 'Dessert', price: 90 },
     { name: 'Chocolate Brownie Sundae', category: 'Dessert', price: 180 },
     { name: 'Strawberry Scoop', category: 'Dessert', price: 95 },
     { name: 'Butterscotch Delight', category: 'Dessert', price: 110 },
+    { name: 'Chicken Dum Biryani', category: 'Main Course', price: 350 },
+    { name: 'Mutton Biryani', category: 'Main Course', price: 420 },
+    { name: 'Veg Biryani', category: 'Main Course', price: 280 },
+    { name: 'Hyderabadi Dum Biryani', category: 'Main Course', price: 450 },
+    { name: 'Butter Chicken', category: 'Main Course', price: 380 },
+    { name: 'Dal Makhani', category: 'Main Course', price: 260 },
   ];
 
   for (const item of itemsToEnsure) {
