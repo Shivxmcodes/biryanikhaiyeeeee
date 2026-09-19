@@ -101,8 +101,8 @@ export default function POSPage() {
             onClick={() => setActiveCategory(cat)}
             className={`flex flex-col items-center justify-center rounded-2xl p-4 text-sm font-bold transition-all ${
               activeCategory === cat 
-                ? 'bg-sky-500 text-white shadow-md shadow-sky-500/40 scale-105' 
-                : 'bg-white text-neutral-500 hover:bg-sky-50 dark:bg-neutral-800 dark:hover:bg-neutral-700'
+                ? 'bg-orange-500 text-white shadow-md shadow-orange-500/40 scale-105' 
+                : 'bg-white text-neutral-500 hover:bg-orange-50 dark:bg-neutral-800 dark:hover:bg-neutral-700'
             }`}
           >
             {cat}
@@ -119,7 +119,7 @@ export default function POSPage() {
             <select 
               value={selectedTable} 
               onChange={e => setSelectedTable(e.target.value)}
-              className="rounded-xl border-none bg-white px-4 py-2 font-bold text-sky-600 shadow-sm outline-none dark:bg-neutral-800"
+              className="rounded-xl border-none bg-white px-4 py-2 font-bold text-orange-600 shadow-sm outline-none dark:bg-neutral-800"
             >
               {tables.map(t => <option key={t.id} value={t.id}>{t.number}</option>)}
             </select>
@@ -129,16 +129,16 @@ export default function POSPage() {
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {filteredMenu.map(item => (
             <div key={item.id} className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white p-4 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:bg-neutral-800">
-              <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-sky-100 text-sky-500 dark:bg-sky-500/20">
+              <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-orange-100 text-orange-500 dark:bg-orange-500/20">
                 <UtensilsCrossed className="size-6" />
               </div>
               <div>
-                <h3 className="font-bold leading-tight text-foreground">{item.name}</h3>
-                <p className="mt-1 text-sm font-semibold text-sky-500">₹{item.price}</p>
+                <h3 className="font-bold leading-tight text-neutral-900 dark:text-white">{item.name}</h3>
+                <p className="mt-1 text-sm font-semibold text-orange-500">₹{item.price}</p>
               </div>
               <button 
                 onClick={() => addToCart(item)}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-100 py-2.5 font-bold text-neutral-700 transition-colors hover:bg-sky-500 hover:text-white dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-sky-500"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-100 py-2.5 font-bold text-neutral-700 transition-colors hover:bg-orange-500 hover:text-white dark:bg-neutral-700 dark:text-neutral-200 dark:hover:bg-orange-500"
               >
                 <Plus className="size-4" /> Add
               </button>
@@ -152,7 +152,7 @@ export default function POSPage() {
 
       {/* Right Panel: Cart */}
       <div className="flex w-96 flex-col overflow-hidden rounded-3xl bg-white shadow-xl dark:bg-neutral-800">
-        <div className="flex items-center gap-3 bg-gradient-to-r from-sky-500 to-blue-600 p-6 text-white">
+        <div className="flex items-center gap-3 bg-gradient-to-r from-orange-500 to-amber-600 p-6 text-white">
           <ShoppingCart className="size-6" />
           <h2 className="text-xl font-bold tracking-wide">Current Order</h2>
         </div>
@@ -175,7 +175,7 @@ export default function POSPage() {
                   <div className="flex items-center gap-3 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-900">
                     <button onClick={() => updateQuantity(item.id, -1)} className="flex size-7 items-center justify-center rounded-md bg-white text-neutral-600 shadow-sm active:scale-95 dark:bg-neutral-700 dark:text-neutral-200"><Minus className="size-3" /></button>
                     <span className="w-4 text-center font-bold text-foreground">{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, 1)} className="flex size-7 items-center justify-center rounded-md bg-sky-500 text-white shadow-sm active:scale-95"><Plus className="size-3" /></button>
+                    <button onClick={() => updateQuantity(item.id, 1)} className="flex size-7 items-center justify-center rounded-md bg-orange-500 text-white shadow-sm active:scale-95"><Plus className="size-3" /></button>
                   </div>
                 </div>
               ))}
@@ -194,12 +194,12 @@ export default function POSPage() {
           </div>
           <div className="mb-6 flex justify-between text-xl font-black text-foreground">
             <span>Total</span>
-            <span className="text-sky-500">₹{(subtotal + tax).toFixed(2)}</span>
+            <span className="text-orange-500">₹{(subtotal + tax).toFixed(2)}</span>
           </div>
           <button 
             onClick={handlePlaceOrder}
             disabled={cart.length === 0 || isOrdering}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 py-4 text-lg font-bold text-white shadow-lg transition-all hover:brightness-110 active:scale-95 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-600 py-4 text-lg font-bold text-white shadow-lg transition-all hover:brightness-110 active:scale-95 disabled:opacity-50"
           >
             {isOrdering ? <span className="animate-spin text-2xl">↻</span> : <CheckCircle2 className="size-5" />}
             PLACE ORDER

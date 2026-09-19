@@ -88,3 +88,11 @@ model Inventory {
   minLevel   Int
   status     String   @default("OK")
 }
+
+model Review {
+  id           String   @id @default(cuid())
+  rating       Int
+  comment      String
+  customerName String   @default("Anonymous")
+  createdAt    DateTime @default(now())
+}

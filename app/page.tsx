@@ -5,6 +5,7 @@ import { OverviewFeature } from "@/components/rms/overview-feature"
 import { MenuGallery } from "@/components/rms/menu-gallery"
 import { StatCards } from "@/components/rms/stat-cards"
 import { OrderQueue } from "@/components/rms/order-queue"
+import { RestaurantReviews } from "@/components/rms/restaurant-reviews"
 import { QuickActions } from "@/components/rms/quick-actions"
 
 export default function Page() {
@@ -38,6 +39,7 @@ export default function Page() {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
             <div className="animate-rise lg:col-span-3 [animation-delay:550ms]">
               <OrderQueue />
+              <RestaurantReviews />
             </div>
             <div className="animate-rise lg:col-span-2 [animation-delay:700ms]">
               <QuickActions />

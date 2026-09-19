@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Grid3x3, Users, Clock, Coffee } from "lucide-react"
+import { Users, Armchair } from "lucide-react"
 import Link from "next/link"
 
 type Table = {
@@ -25,6 +25,12 @@ export default function TableMapPage() {
     try {
       const res = await fetch('/api/tables')
       const data = await res.json()
+      // Sort to ensure T-1, T-2 etc are in order
+      data.sort((a: Table, b: Table) => {
+        const aNum = parseInt(a.number.replace(/\D/g, '')) || 0
+        const bNum = parseInt(b.number.replace(/\D/g, '')) || 0
+        return aNum - bNum
+      })
       setTables(data)
     } catch (e) {
       console.error(e)
@@ -33,68 +39,97 @@ export default function TableMapPage() {
     }
   }
 
-  const getStatusColor = (status: string) => {
+  const getLocation = (table: Table) => {
+    const num = parseInt(table.number.replace(/\D/g, '')) || 0
+    if (num <= 3) return "INDOOR"
+    if (num === 4 || num === 7) return "WINDOW VIEW"
+    if (num === 5 || num === 6) return "OUTDOOR GARDEN"
+    if (num >= 8 && num <= 10) return "ROOFTOP AC"
+    return "FAMILY LOUNGE"
+  }
+
+  // Define a huge palette of extremely bright, solid colors for each table index
+  const getCardColorStyles = (index: number, status: string) => {
+    const isAvailable = status === "AVAILABLE";
+    // Keep available tables interactive, make others slightly dimmer but still vibrant
+    const baseState = isAvailable ? "hover:-translate-y-2 hover:scale-105" : "cursor-not-allowed opacity-75 grayscale-[30%]";
+    
+    const colors = [
+      "bg-indigo-500 border-indigo-400 shadow-[0_10px_30px_rgba(99,102,241,0.5)] text-white", // 0
+      "bg-fuchsia-500 border-fuchsia-400 shadow-[0_10px_30px_rgba(217,70,239,0.5)] text-white", // 1
+      "bg-emerald-500 border-emerald-400 shadow-[0_10px_30px_rgba(16,185,129,0.5)] text-white", // 2
+      "bg-amber-500 border-amber-400 shadow-[0_10px_30px_rgba(245,158,11,0.5)] text-white", // 3
+      "bg-rose-500 border-rose-400 shadow-[0_10px_30px_rgba(244,63,94,0.5)] text-white", // 4
+      "bg-cyan-500 border-cyan-400 shadow-[0_10px_30px_rgba(6,182,212,0.5)] text-white", // 5
+      "bg-violet-500 border-violet-400 shadow-[0_10px_30px_rgba(139,92,246,0.5)] text-white", // 6
+      "bg-pink-500 border-pink-400 shadow-[0_10px_30px_rgba(236,72,153,0.5)] text-white", // 7
+      "bg-lime-500 border-lime-400 shadow-[0_10px_30px_rgba(132,204,22,0.5)] text-white", // 8
+      "bg-blue-500 border-blue-400 shadow-[0_10px_30px_rgba(59,130,246,0.5)] text-white", // 9
+      "bg-orange-500 border-orange-400 shadow-[0_10px_30px_rgba(249,115,22,0.5)] text-white", // 10
+      "bg-teal-500 border-teal-400 shadow-[0_10px_30px_rgba(20,184,166,0.5)] text-white", // 11
+    ]
+    
+    return `${baseState} ${colors[index % colors.length]}`;
+  }
+
+  const getStatusBadge = (status: string) => {
     switch (status) {
-      case "AVAILABLE": return "bg-emerald-100 text-emerald-700 border-emerald-300 ring-emerald-500/30"
-      case "OCCUPIED": return "bg-amber-100 text-amber-700 border-amber-300 ring-amber-500/30"
-      case "RESERVED": return "bg-neutral-100 text-neutral-500 border-neutral-300 ring-neutral-500/30"
-      default: return "bg-slate-100 text-slate-700 border-slate-300 ring-slate-500/30"
+      case "AVAILABLE": return <span className="mt-2 rounded-full bg-black/20 px-4 py-1.5 font-black text-[10px] uppercase tracking-widest text-white backdrop-blur-md border border-white/20">Available</span>
+      case "OCCUPIED": return <span className="mt-2 rounded-full bg-black/20 px-4 py-1.5 font-black text-[10px] uppercase tracking-widest text-white backdrop-blur-md border border-white/20">Occupied</span>
+      case "RESERVED": return <span className="mt-2 rounded-full bg-black/20 px-4 py-1.5 font-black text-[10px] uppercase tracking-widest text-white backdrop-blur-md border border-white/20">Reserved</span>
+      default: return null
     }
   }
 
-  if (isLoading) return <div className="flex h-full items-center justify-center pt-20"><div className="size-10 animate-spin rounded-full border-4 border-violet-500 border-t-transparent" /></div>
+  if (isLoading) return <div className="flex h-full items-center justify-center pt-20"><div className="size-10 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent" /></div>
 
   return (
-    <div className="flex min-h-[calc(100vh-1rem)] flex-col p-6 pt-16">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-4xl font-black tracking-tight text-foreground">Floor Plan</h1>
-          <p className="mt-1 text-muted-foreground">Manage seating and table statuses</p>
-        </div>
-        
-        {/* Legend */}
-        <div className="flex items-center gap-4 rounded-xl border border-border bg-card px-4 py-2 shadow-sm">
-          <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700">
-            <span className="size-3 rounded-full bg-emerald-500" /> Available
-          </div>
-          <div className="flex items-center gap-2 text-sm font-semibold text-amber-700">
-            <span className="size-3 rounded-full bg-amber-500" /> Occupied
-          </div>
-          <div className="flex items-center gap-2 text-sm font-semibold text-neutral-500">
-            <span className="size-3 rounded-full bg-neutral-400" /> Reserved
-          </div>
-        </div>
+    <div className="flex min-h-[calc(100vh-1rem)] flex-col p-6 pt-16 max-w-7xl mx-auto">
+      
+      {/* Header Container */}
+      <div className="mb-10 rounded-[2rem] bg-white p-8 shadow-sm border border-neutral-100 dark:bg-neutral-900 dark:border-neutral-800">
+        <h1 className="text-3xl font-extrabold tracking-tight text-neutral-800 dark:text-neutral-100">
+          Interactive Restaurant Floor Plan
+        </h1>
+        <p className="mt-2 text-neutral-500 font-medium">
+          Select any available table from our diverse seating options to begin an order.
+        </p>
       </div>
 
-      <div className="relative flex-1 rounded-3xl border-2 border-dashed border-border/60 bg-neutral-50/50 p-8 dark:bg-neutral-900/20">
+      {/* Grid Container */}
+      <div className="rounded-[2.5rem] bg-white/50 backdrop-blur-md p-8 shadow-inner border border-neutral-200/60 dark:bg-black/20 dark:border-white/5">
         
-        {/* Decorative Floor Plan Elements */}
-        <div className="absolute inset-x-12 bottom-12 top-12 rounded-[3rem] border border-border/30 bg-white/40 shadow-inner dark:bg-black/20" />
-        
-        {/* Table Grid */}
-        <div className="relative z-10 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {tables.map(table => (
-            <Link 
-              href={`/pos?table=${table.id}`} // Links to POS to start order
-              key={table.id}
-              className={`group relative flex aspect-square flex-col items-center justify-center gap-2 rounded-full border-4 shadow-xl transition-all hover:scale-105 active:scale-95 ${getStatusColor(table.status)}`}
-            >
-              <div className="absolute inset-0 rounded-full ring-4 opacity-0 transition-opacity group-hover:opacity-100" />
-              
-              <h2 className="text-3xl font-black">{table.number}</h2>
-              
-              <div className="flex items-center gap-1 text-sm font-bold opacity-80">
-                <Users className="size-4" />
-                {table.capacity} Seats
-              </div>
-              
-              {table.status === "OCCUPIED" && (
-                <div className="absolute -bottom-2 -right-2 flex size-10 items-center justify-center rounded-full bg-white text-amber-500 shadow-md ring-2 ring-amber-100 dark:bg-neutral-800">
-                  <Coffee className="size-5" />
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          {tables.map((table, index) => {
+            const isClickable = table.status === "AVAILABLE"
+            const CardWrapper = isClickable ? Link : 'div'
+            const linkProps = isClickable ? { href: `/pos?table=${table.id}` } : {}
+
+            return (
+              <CardWrapper
+                key={table.id}
+                {...linkProps}
+                // Aspect-[3/4] ensures the vertical layout requested
+                className={`group relative flex aspect-[3/4] flex-col items-center justify-between gap-3 rounded-[2rem] border-2 p-6 transition-all duration-300 backdrop-blur-sm ${getCardColorStyles(index, table.status)}`}
+              >
+                {/* Table Number */}
+                <h2 className="text-3xl font-black tracking-tight">{table.number}</h2>
+                
+                <div className="flex flex-col items-center gap-1.5 opacity-80 mt-auto mb-2">
+                  <Armchair className="size-5" />
+                  <span className="text-xs font-bold">{table.capacity} Seats</span>
                 </div>
-              )}
-            </Link>
-          ))}
+                
+                {/* Location */}
+                <div className="text-[10px] font-black uppercase tracking-widest opacity-60 text-center">
+                  {getLocation(table)}
+                </div>
+
+                {/* Status Indicator Badge */}
+                {getStatusBadge(table.status)}
+              </CardWrapper>
+            )
+          })}
         </div>
         
       </div>
