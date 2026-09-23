@@ -6,11 +6,12 @@ async function main() {
 
   // Waiters requested by user
   const waiters = [
-    { name: 'Priya', role: 'WAITER' },
-    { name: 'Shravani', role: 'WAITER' },
-    { name: 'Shubhra', role: 'WAITER' },
-    { name: 'Samruddhi', role: 'WAITER' },
-    { name: 'Aashika', role: 'WAITER' }
+    { name: 'Soham', role: 'WAITER' },
+    { name: 'Kunal', role: 'WAITER' },
+    { name: 'Neha', role: 'WAITER' },
+    { name: 'Isha', role: 'WAITER' },
+    { name: 'Nisha', role: 'WAITER' },
+    { name: 'Rohan', role: 'WAITER' }
   ]
 
   for (const waiter of waiters) {
@@ -49,11 +50,11 @@ async function main() {
   ]
 
   console.log('Creating sample orders...')
-  const priya = await prisma.staff.findFirst({ where: { name: 'Priya' } })
-  const shravani = await prisma.staff.findFirst({ where: { name: 'Shravani' } })
-  const shubhra = await prisma.staff.findFirst({ where: { name: 'Shubhra' } })
-  const samruddhi = await prisma.staff.findFirst({ where: { name: 'Samruddhi' } })
-  const aashika = await prisma.staff.findFirst({ where: { name: 'Aashika' } })
+  const soham = await prisma.staff.findFirst({ where: { name: 'Soham' } })
+  const kunal = await prisma.staff.findFirst({ where: { name: 'Kunal' } })
+  const neha = await prisma.staff.findFirst({ where: { name: 'Neha' } })
+  const isha = await prisma.staff.findFirst({ where: { name: 'Isha' } })
+  const nisha = await prisma.staff.findFirst({ where: { name: 'Nisha' } })
 
   const t08 = await prisma.table.findUnique({ where: { number: 'T-08' } })
   const t03 = await prisma.table.findUnique({ where: { number: 'T-03' } })
@@ -61,11 +62,11 @@ async function main() {
   const t21 = await prisma.table.findUnique({ where: { number: 'T-21' } })
   const t06 = await prisma.table.findUnique({ where: { number: 'T-06' } })
 
-  if (priya && t08) await prisma.order.create({ data: { orderId: '#1042', tableId: t08.id, waiterId: priya.id, status: 'Cooking', elapsed: '12 min' } })
-  if (shravani && t03) await prisma.order.create({ data: { orderId: '#1041', tableId: t03.id, waiterId: shravani.id, status: 'Ready', elapsed: '18 min' } })
-  if (shubhra && t15) await prisma.order.create({ data: { orderId: '#1040', tableId: t15.id, waiterId: shubhra.id, status: 'Pending', elapsed: '3 min' } })
-  if (samruddhi && t21) await prisma.order.create({ data: { orderId: '#1039', tableId: t21.id, waiterId: samruddhi.id, status: 'Cooking', elapsed: '9 min' } })
-  if (aashika && t06) await prisma.order.create({ data: { orderId: '#1038', tableId: t06.id, waiterId: aashika.id, status: 'Ready', elapsed: '22 min' } })
+  if (soham && t08) await prisma.order.create({ data: { orderId: '#1042', tableId: t08.id, waiterId: soham.id, status: 'Cooking', elapsed: '12 min' } })
+  if (kunal && t03) await prisma.order.create({ data: { orderId: '#1041', tableId: t03.id, waiterId: kunal.id, status: 'Ready', elapsed: '18 min' } })
+  if (neha && t15) await prisma.order.create({ data: { orderId: '#1040', tableId: t15.id, waiterId: neha.id, status: 'Pending', elapsed: '3 min' } })
+  if (isha && t21) await prisma.order.create({ data: { orderId: '#1039', tableId: t21.id, waiterId: isha.id, status: 'Cooking', elapsed: '9 min' } })
+  if (nisha && t06) await prisma.order.create({ data: { orderId: '#1038', tableId: t06.id, waiterId: nisha.id, status: 'Ready', elapsed: '22 min' } })
 
   console.log('Seeding completed!')
 }
