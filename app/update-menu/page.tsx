@@ -66,7 +66,7 @@ export default function UpdateMenuPage() {
 
   return (
     <div className="flex min-h-[calc(100vh-1rem)] flex-col items-center py-10 px-6 pt-16 space-y-10">
-      <div className="w-full max-w-lg animate-rise overflow-hidden rounded-[2rem] border border-border bg-card shadow-2xl">
+      <div className="w-full max-w-lg animate-rise overflow-hidden rounded-[2rem] border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-2xl">
         <div className="bg-gradient-to-br from-indigo-500 to-blue-600 p-8 text-center text-white">
           <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-white/20 shadow-inner">
             <BookOpenText className="size-8" />
@@ -80,8 +80,8 @@ export default function UpdateMenuPage() {
             <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-500">
               <CheckCircle2 className="size-8" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground">Dish Added!</h2>
-            <p className="mt-2 text-muted-foreground">The new item is now instantly available on the POS system and customer menu.</p>
+            <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">Dish Added!</h2>
+            <p className="mt-2 text-neutral-500 dark:text-neutral-400">The new item is now instantly available on the POS system and customer menu.</p>
             <div className="mt-8 flex gap-4">
               <button 
                 onClick={() => setSubmitted(false)}
@@ -101,22 +101,22 @@ export default function UpdateMenuPage() {
           <form onSubmit={handleSubmit} className="p-8">
             <div className="space-y-5">
               <div>
-                <label className="mb-2 block text-sm font-bold text-foreground">Dish Name</label>
+                <label className="mb-2 block text-sm font-bold text-neutral-900 dark:text-white">Dish Name</label>
                 <input 
                   required 
                   type="text" 
                   value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder="e.g. Chicken Tikka Masala"
-                  className="w-full rounded-xl border-2 border-border bg-background px-4 py-3 font-bold text-foreground outline-none transition-colors focus:border-indigo-500" 
+                  className="w-full rounded-xl border-2 border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-3 font-bold text-neutral-900 dark:text-white outline-none transition-colors focus:border-indigo-500" 
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-foreground">Price</label>
+                  <label className="mb-2 block text-sm font-bold text-neutral-900 dark:text-white">Price</label>
                   <div className="relative">
-                    <IndianRupee className="absolute left-3 top-3.5 size-4 text-muted-foreground" />
+                    <IndianRupee className="absolute left-3 top-3.5 size-4 text-neutral-500 dark:text-neutral-400" />
                     <input 
                       required 
                       type="number" 
@@ -124,17 +124,17 @@ export default function UpdateMenuPage() {
                       value={price}
                       onChange={e => setPrice(e.target.value)}
                       placeholder="299"
-                      className="w-full rounded-xl border-2 border-border bg-background py-3 pl-9 pr-4 font-bold text-foreground outline-none transition-colors focus:border-indigo-500" 
+                      className="w-full rounded-xl border-2 border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 py-3 pl-9 pr-4 font-bold text-neutral-900 dark:text-white outline-none transition-colors focus:border-indigo-500" 
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="mb-2 block text-sm font-bold text-foreground">Category</label>
+                  <label className="mb-2 block text-sm font-bold text-neutral-900 dark:text-white">Category</label>
                   <select 
                     required 
                     value={category}
                     onChange={e => setCategory(e.target.value)}
-                    className="w-full appearance-none rounded-xl border-2 border-border bg-background px-4 py-3 font-bold text-foreground outline-none transition-colors focus:border-indigo-500"
+                    className="w-full appearance-none rounded-xl border-2 border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-3 font-bold text-neutral-900 dark:text-white outline-none transition-colors focus:border-indigo-500"
                   >
                     <option value="Starters">Starters</option>
                     <option value="Main Course">Main Course</option>
@@ -156,14 +156,14 @@ export default function UpdateMenuPage() {
         )}
       </div>
 
-      <div className="w-full max-w-4xl rounded-2xl border border-border bg-card p-6 shadow-xl">
-        <h2 className="mb-6 text-2xl font-bold">Current Menu Items</h2>
+      <div className="w-full max-w-4xl rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6 shadow-xl">
+        <h2 className="mb-6 text-2xl font-bold text-neutral-900 dark:text-white">Current Menu Items</h2>
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {menuItems.map(item => (
-            <div key={item.id} className="flex items-center justify-between rounded-xl border border-border p-4 shadow-sm">
+            <div key={item.id} className="flex items-center justify-between rounded-xl border border-neutral-200 dark:border-neutral-800 p-4 shadow-sm">
               <div>
-                <p className="font-bold">{item.name}</p>
-                <p className="text-sm text-muted-foreground">₹{item.price} • {item.category}</p>
+                <p className="font-bold text-neutral-900 dark:text-white">{item.name}</p>
+                <p className="text-sm text-neutral-500 dark:text-neutral-400">₹{item.price} • {item.category}</p>
               </div>
               <button 
                 onClick={() => handleDelete(item.id)}

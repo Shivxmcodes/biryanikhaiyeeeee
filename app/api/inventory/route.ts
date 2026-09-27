@@ -6,8 +6,9 @@ const prisma = globalForPrisma.prisma || new PrismaClient()
 
 async function seedInventoryIfNeeded() {
   const count = await prisma.inventory.count();
-  if (count < 6) { // Make sure we have a good amount of items
-    const newItems = [
+  if (count > 0) return; 
+
+  const newItems = [
       { item: 'Basmati Rice', quantity: 50, unit: 'kg', minLevel: 10 },
       { item: 'Chicken', quantity: 20, unit: 'kg', minLevel: 15 },
       { item: 'Saffron', quantity: 5, unit: 'g', minLevel: 10 },
@@ -23,7 +24,6 @@ async function seedInventoryIfNeeded() {
         await prisma.inventory.create({ data: item });
       }
     }
-  }
 }
 
 export async function GET() {

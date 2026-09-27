@@ -32,6 +32,9 @@ async function seedMenuItemsIfNeeded() {
 
 // better seeding logic:
 async function seedMissingItems() {
+  const count = await prisma.menuItem.count();
+  if (count >= 16) return; // Skip if already seeded
+
   const itemsToEnsure = [
     { name: 'Chilli Chicken', category: 'Starters', price: 250 },
     { name: 'Tandoori Chicken', category: 'Starters', price: 320 },

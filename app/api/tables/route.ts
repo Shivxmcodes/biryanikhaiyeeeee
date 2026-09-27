@@ -7,8 +7,9 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 async function seedTablesIfNeeded() {
   const count = await prisma.table.count();
-  if (count < 10) {
-    const defaultTables = Array.from({ length: 12 }, (_, i) => ({
+  if (count > 0) return;
+  
+  const defaultTables = Array.from({ length: 12 }, (_, i) => ({
       number: `T-${i + 1}`,
       capacity: [2, 4, 6, 8][Math.floor(Math.random() * 4)],
       status: ["AVAILABLE", "OCCUPIED", "RESERVED"][Math.floor(Math.random() * 3)] as any
@@ -20,7 +21,6 @@ async function seedTablesIfNeeded() {
         await prisma.table.create({ data: t });
       }
     }
-  }
 }
 
 export async function GET() {
