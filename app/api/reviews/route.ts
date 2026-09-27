@@ -12,7 +12,7 @@ async function seedDummyReviewsIfNeeded() {
     await prisma.review.createMany({
       data: [
         { customerName: 'Aarav Sharma', rating: 5, comment: 'The best Biryani I have had in town! Highly recommend the Special Chicken Biryani.' },
-        { customerName: 'Priya Patel', rating: 4, comment: 'Great atmosphere and excellent service. Food was delicious but slightly spicy for my taste.' },
+        { customerName: 'John Doe', rating: 4, comment: 'Great atmosphere and excellent service. Food was delicious but slightly spicy for my taste.' },
         { customerName: 'Rahul Verma', rating: 5, comment: 'Absolutely phenomenal. The flavors are authentic and the staff is very welcoming.' },
       ]
     });

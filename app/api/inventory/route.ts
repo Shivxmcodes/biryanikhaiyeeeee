@@ -37,3 +37,47 @@ export async function GET() {
     return NextResponse.json({ error: "Failed to fetch inventory" }, { status: 500 })
   }
 }
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json()
+    const { item, quantity, unit, minLevel } = body
+    
+    if (!item || quantity === undefined || !unit || minLevel === undefined) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    }
+
+    const newItem = await prisma.inventory.create({
+      data: {
+        item,
+        quantity: parseInt(quantity) || 0,
+        unit,
+        minLevel: parseInt(minLevel) || 0,
+      }
+    })
+    
+    return NextResponse.json(newItem, { status: 201 })
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to create inventory item" }, { status: 500 })
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get('id')
+    
+    if (!id) {
+      return NextResponse.json({ error: "Missing id" }, { status: 400 })
+    }
+
+    await prisma.inventory.delete({
+      where: { id: id }
+    })
+    
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json({ error: "Failed to delete inventory item" }, { status: 500 })
+  }
+}

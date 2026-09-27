@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { BookOpenText, CheckCircle2, IndianRupee } from "lucide-react"
+import { useState, useEffect } from "react"
+import { BookOpenText, CheckCircle2, IndianRupee, Trash2 } from "lucide-react"
 import Link from "next/link"
 
 export default function UpdateMenuPage() {
@@ -10,6 +10,21 @@ export default function UpdateMenuPage() {
   const [category, setCategory] = useState("Starters")
   const [submitted, setSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [menuItems, setMenuItems] = useState<any[]>([])
+
+  const fetchMenu = async () => {
+    try {
+      const res = await fetch('/api/menu')
+      const data = await res.json()
+      setMenuItems(data)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  useEffect(() => {
+    fetchMenu()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,6 +43,7 @@ export default function UpdateMenuPage() {
       setSubmitted(true)
       setName("")
       setPrice("")
+      fetchMenu()
     } catch (error) {
       console.error(error)
       alert("Failed to add menu item.")
@@ -36,8 +52,20 @@ export default function UpdateMenuPage() {
     }
   }
 
+  const handleDelete = async (id: string) => {
+    try {
+      await fetch(`/api/menu?id=${id}`, {
+        method: 'DELETE',
+      })
+      fetchMenu()
+    } catch (error) {
+      console.error(error)
+      alert("Failed to delete menu item.")
+    }
+  }
+
   return (
-    <div className="flex min-h-[calc(100vh-1rem)] items-center justify-center p-6 pt-16">
+    <div className="flex min-h-[calc(100vh-1rem)] flex-col items-center py-10 px-6 pt-16 space-y-10">
       <div className="w-full max-w-lg animate-rise overflow-hidden rounded-[2rem] border border-border bg-card shadow-2xl">
         <div className="bg-gradient-to-br from-indigo-500 to-blue-600 p-8 text-center text-white">
           <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-white/20 shadow-inner">
@@ -127,6 +155,27 @@ export default function UpdateMenuPage() {
           </form>
         )}
       </div>
+
+      <div className="w-full max-w-4xl rounded-2xl border border-border bg-card p-6 shadow-xl">
+        <h2 className="mb-6 text-2xl font-bold">Current Menu Items</h2>
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+          {menuItems.map(item => (
+            <div key={item.id} className="flex items-center justify-between rounded-xl border border-border p-4 shadow-sm">
+              <div>
+                <p className="font-bold">{item.name}</p>
+                <p className="text-sm text-muted-foreground">₹{item.price} • {item.category}</p>
+              </div>
+              <button 
+                onClick={() => handleDelete(item.id)}
+                className="rounded-full bg-red-100 p-2 text-red-600 transition-colors hover:bg-red-200"
+              >
+                <Trash2 className="size-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
+
