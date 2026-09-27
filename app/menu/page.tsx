@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { UtensilsCrossed, Star } from "lucide-react"
+import { UtensilsCrossed, Star, Trash2 } from "lucide-react"
 
 type MenuItem = {
   id: string
@@ -55,13 +55,28 @@ export default function MenuPage() {
               <div className="grid gap-6 sm:grid-cols-2">
                 {items.map(item => (
                   <div key={item.id} className="group relative flex items-center justify-between rounded-3xl border border-amber-900/5 bg-white p-6 shadow-xl shadow-amber-900/5 transition-transform hover:-translate-y-1">
+                    <button 
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        try {
+                          await fetch(`/api/menu?id=${item.id}`, { method: 'DELETE' });
+                          setMenu(prev => prev.filter(m => m.id !== item.id));
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      }}
+                      className="absolute right-3 top-3 rounded-full p-2 text-red-500 bg-red-50 hover:bg-red-100"
+                      title="Delete from menu"
+                    >
+                      <Trash2 className="size-4" />
+                    </button>
                     <div className="pr-4">
                       <h3 className="text-xl font-bold text-neutral-800">{item.name}</h3>
                       <div className="mt-2 flex items-center gap-1 text-xs font-bold text-amber-500">
                         <Star className="size-3.5 fill-amber-500" /> Chef's Special
                       </div>
                     </div>
-                    <div className="shrink-0 text-right">
+                    <div className="shrink-0 text-right mt-6 sm:mt-0">
                       <span className="text-2xl font-black text-amber-600">₹{item.price}</span>
                     </div>
                   </div>

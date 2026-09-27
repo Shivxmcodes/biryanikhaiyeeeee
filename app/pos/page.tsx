@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Plus, Minus, ShoppingCart, UtensilsCrossed, CheckCircle2 } from "lucide-react"
+import { Plus, Minus, ShoppingCart, UtensilsCrossed, CheckCircle2, Trash2 } from "lucide-react"
 
 type MenuItem = {
   id: string
@@ -113,9 +113,9 @@ export default function POSPage() {
       {/* Middle Panel: Menu Items */}
       <div className="flex-1 overflow-y-auto rounded-3xl bg-neutral-100 p-6 shadow-inner dark:bg-neutral-900/60">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-black text-foreground">Menu Items</h2>
+          <h2 className="text-2xl font-black text-neutral-900 dark:text-white">Menu Items</h2>
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-muted-foreground">Table:</span>
+            <span className="font-semibold text-neutral-600 dark:text-neutral-400">Table:</span>
             <select 
               value={selectedTable} 
               onChange={e => setSelectedTable(e.target.value)}
@@ -129,6 +129,21 @@ export default function POSPage() {
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {filteredMenu.map(item => (
             <div key={item.id} className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white p-4 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md dark:bg-neutral-800">
+              <button 
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  try {
+                    await fetch(`/api/menu?id=${item.id}`, { method: 'DELETE' });
+                    setMenu(prev => prev.filter(m => m.id !== item.id));
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+                className="absolute right-2 top-2 rounded-full p-2 text-red-500 bg-red-50 dark:bg-red-900/20 hover:bg-red-100"
+                title="Delete from menu"
+              >
+                <Trash2 className="size-4" />
+              </button>
               <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-orange-100 text-orange-500 dark:bg-orange-500/20">
                 <UtensilsCrossed className="size-6" />
               </div>
@@ -169,12 +184,12 @@ export default function POSPage() {
               {cart.map(item => (
                 <div key={item.id} className="flex items-center justify-between border-b border-border pb-4">
                   <div className="flex-1 pr-2">
-                    <h4 className="font-semibold text-foreground line-clamp-1">{item.name}</h4>
-                    <p className="text-sm font-medium text-muted-foreground">₹{item.price}</p>
+                    <h4 className="font-semibold text-neutral-900 dark:text-white line-clamp-1">{item.name}</h4>
+                    <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">₹{item.price}</p>
                   </div>
                   <div className="flex items-center gap-3 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-900">
                     <button onClick={() => updateQuantity(item.id, -1)} className="flex size-7 items-center justify-center rounded-md bg-white text-neutral-600 shadow-sm active:scale-95 dark:bg-neutral-700 dark:text-neutral-200"><Minus className="size-3" /></button>
-                    <span className="w-4 text-center font-bold text-foreground">{item.quantity}</span>
+                    <span className="w-4 text-center font-bold text-neutral-900 dark:text-white">{item.quantity}</span>
                     <button onClick={() => updateQuantity(item.id, 1)} className="flex size-7 items-center justify-center rounded-md bg-orange-500 text-white shadow-sm active:scale-95"><Plus className="size-3" /></button>
                   </div>
                 </div>
@@ -184,15 +199,15 @@ export default function POSPage() {
         </div>
 
         <div className="bg-neutral-50 p-6 dark:bg-neutral-900">
-          <div className="mb-2 flex justify-between text-sm font-medium text-muted-foreground">
+          <div className="mb-2 flex justify-between text-sm font-medium text-neutral-500 dark:text-neutral-400">
             <span>Subtotal</span>
             <span>₹{subtotal.toFixed(2)}</span>
           </div>
-          <div className="mb-4 flex justify-between text-sm font-medium text-muted-foreground">
+          <div className="mb-4 flex justify-between text-sm font-medium text-neutral-500 dark:text-neutral-400">
             <span>GST (5%)</span>
             <span>₹{tax.toFixed(2)}</span>
           </div>
-          <div className="mb-6 flex justify-between text-xl font-black text-foreground">
+          <div className="mb-6 flex justify-between text-xl font-black text-neutral-900 dark:text-white">
             <span>Total</span>
             <span className="text-orange-500">₹{(subtotal + tax).toFixed(2)}</span>
           </div>
