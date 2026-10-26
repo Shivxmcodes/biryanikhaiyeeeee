@@ -19,10 +19,14 @@ export default function StaffPage() {
     fetch('/api/staff')
       .then(r => r.json())
       .then(data => {
-        setStaff(data)
+        setStaff(Array.isArray(data) ? data : [])
         setIsLoading(false)
       })
-      .catch(console.error)
+      .catch(err => {
+        console.error(err)
+        setStaff([])
+        setIsLoading(false)
+      })
   }, [])
 
   if (isLoading) return <div className="flex h-full items-center justify-center pt-20"><div className="size-10 animate-spin rounded-full border-4 border-fuchsia-500 border-t-transparent" /></div>

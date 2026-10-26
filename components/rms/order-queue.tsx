@@ -44,11 +44,17 @@ export function OrderQueue() {
     fetch('/api/orders')
       .then(res => res.json())
       .then(data => {
-        setOrders(data)
+        if (Array.isArray(data)) {
+          setOrders(data)
+        } else {
+          console.warn("API returned non-array data, falling back to empty list:", data)
+          setOrders([])
+        }
         setIsLoading(false)
       })
       .catch(err => {
-        console.error(err)
+        console.error("Error fetching orders:", err)
+        setOrders([])
         setIsLoading(false)
       })
   }
@@ -94,7 +100,7 @@ export function OrderQueue() {
           <tbody>
             {isLoading ? (
               <tr><td colSpan={5} className="px-5 py-4 text-center text-muted-foreground">Loading orders...</td></tr>
-            ) : orders.length === 0 ? (
+            ) : !Array.isArray(orders) || orders.length === 0 ? (
               <tr><td colSpan={5} className="px-5 py-4 text-center text-muted-foreground">No active orders</td></tr>
             ) : orders.map((order) => (
               <tr

@@ -26,9 +26,10 @@ export default function LiveOrdersPage() {
     try {
       const res = await fetch('/api/orders')
       const data = await res.json()
-      setOrders(data)
+      setOrders(Array.isArray(data) ? data : [])
     } catch (e) {
       console.error(e)
+      setOrders([])
     } finally {
       setIsLoading(false)
     }

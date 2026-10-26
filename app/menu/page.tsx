@@ -14,7 +14,13 @@ export default function MenuPage() {
   const [menu, setMenu] = useState<MenuItem[]>([])
   
   useEffect(() => {
-    fetch('/api/menu').then(r => r.json()).then(setMenu)
+    fetch('/api/menu')
+      .then(r => r.json())
+      .then(data => setMenu(Array.isArray(data) ? data : []))
+      .catch(err => {
+        console.error("Error fetching menu:", err)
+        setMenu([])
+      })
   }, [])
 
   const categories = ["Starters", "Main Course", "Drinks", "Dessert"]

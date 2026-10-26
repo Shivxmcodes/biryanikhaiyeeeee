@@ -25,15 +25,20 @@ export default function TableMapPage() {
     try {
       const res = await fetch('/api/tables')
       const data = await res.json()
-      // Sort to ensure T-1, T-2 etc are in order
-      data.sort((a: Table, b: Table) => {
-        const aNum = parseInt(a.number.replace(/\D/g, '')) || 0
-        const bNum = parseInt(b.number.replace(/\D/g, '')) || 0
-        return aNum - bNum
-      })
-      setTables(data)
+      if (Array.isArray(data)) {
+        // Sort to ensure T-1, T-2 etc are in order
+        data.sort((a: Table, b: Table) => {
+          const aNum = parseInt(a.number.replace(/\D/g, '')) || 0
+          const bNum = parseInt(b.number.replace(/\D/g, '')) || 0
+          return aNum - bNum
+        })
+        setTables(data)
+      } else {
+        setTables([])
+      }
     } catch (e) {
       console.error(e)
+      setTables([])
     } finally {
       setIsLoading(false)
     }

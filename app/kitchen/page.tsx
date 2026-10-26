@@ -25,10 +25,15 @@ export default function KitchenDisplayPage() {
     try {
       const res = await fetch('/api/orders')
       const data = await res.json()
-      // KDS only cares about Pending and Cooking
-      setOrders(data.filter((o: Order) => o.status === "Pending" || o.status === "Cooking"))
+      if (Array.isArray(data)) {
+        // KDS only cares about Pending and Cooking
+        setOrders(data.filter((o: Order) => o.status === "Pending" || o.status === "Cooking"))
+      } else {
+        setOrders([])
+      }
     } catch (e) {
       console.error(e)
+      setOrders([])
     } finally {
       setIsLoading(false)
     }

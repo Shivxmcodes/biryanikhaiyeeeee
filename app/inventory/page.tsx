@@ -28,14 +28,18 @@ export default function InventoryPage() {
       const res = await fetch('/api/inventory')
       let data = await res.json()
       
-      data = data.map((i: any) => ({
-        ...i,
-        status: i.quantity === 0 ? "CRITICAL" : i.quantity <= i.minLevel ? "LOW STOCK" : "OK"
-      }))
-      
-      setInventory(data)
+      if (Array.isArray(data)) {
+        data = data.map((i: any) => ({
+          ...i,
+          status: i.quantity === 0 ? "CRITICAL" : i.quantity <= i.minLevel ? "LOW STOCK" : "OK"
+        }))
+        setInventory(data)
+      } else {
+        setInventory([])
+      }
     } catch (e) {
       console.error(e)
+      setInventory([])
     } finally {
       setIsLoading(false)
     }

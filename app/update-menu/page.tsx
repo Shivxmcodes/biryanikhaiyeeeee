@@ -16,9 +16,10 @@ export default function UpdateMenuPage() {
     try {
       const res = await fetch('/api/menu')
       const data = await res.json()
-      setMenuItems(data)
+      setMenuItems(Array.isArray(data) ? data : [])
     } catch (e) {
       console.error(e)
+      setMenuItems([])
     }
   }
 

@@ -34,11 +34,18 @@ export default function POSPage() {
       fetch('/api/menu').then(r => r.json()),
       fetch('/api/tables').then(r => r.json())
     ]).then(([menuData, tablesData]) => {
-      setMenu(menuData)
-      setTables(tablesData)
-      if (tablesData.length > 0) setSelectedTable(tablesData[0].id)
+      const safeMenu = Array.isArray(menuData) ? menuData : []
+      const safeTables = Array.isArray(tablesData) ? tablesData : []
+      setMenu(safeMenu)
+      setTables(safeTables)
+      if (safeTables.length > 0) setSelectedTable(safeTables[0].id)
       setIsLoading(false)
-    }).catch(console.error)
+    }).catch(err => {
+      console.error(err)
+      setMenu([])
+      setTables([])
+      setIsLoading(false)
+    })
   }, [])
 
   const addToCart = (item: MenuItem) => {
